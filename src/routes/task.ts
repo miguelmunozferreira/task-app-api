@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { addTask, getTask, deleteTask, getTasks, updateTask } from "../controllers/task.controller";
-import { logMiddleware } from "../middleware/log";
 
 const router = Router();
 
