@@ -4,17 +4,18 @@ import { User } from "../interfaces/user.interface";
 const UserSchema = new Schema<User>(
   {
     name: {
-      required: true,
       type: String,
+      required: [true, "Name is required"],
     },
     password: {
-      required: true,
       type: String,
+      required: [true, "Password is required"],
     },
     email: {
       required: true,
       type: String,
       unique: true,
+      match: new RegExp("^.+@.+\\.[a-z]+$"),
     },
     description: {
       type: String,

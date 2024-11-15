@@ -1,9 +1,14 @@
 import { Request, response, Response } from "express";
 import { registerNewUser, loginUser } from "../services/auth.service";
+import { handleHttp } from "../utils/error.handle";
 
 const registrerCtrl = async ({ body }: Request, res: Response) => {
-  const responseUser = await registerNewUser(body);
-  res.send(responseUser);
+  try {
+    const responseUser = await registerNewUser(body);
+    res.send(responseUser);
+  } catch (e: any) {
+    handleHttp(res, e.message);
+  }
 };
 
 const loginCtrl = async ({ body }: Request, res: Response) => {
