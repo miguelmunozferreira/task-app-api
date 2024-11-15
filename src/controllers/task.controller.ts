@@ -13,8 +13,9 @@ const getTasks = async (req: Request, res: Response) => {
 
 const getTask = async ({ params }: Request, res: Response) => {
   try {
-    const responseTasks = await TaskService.getTask(params.id);
-    res.send(responseTasks);
+    const responseTask = await TaskService.getTask(params.id);
+    if (responseTask == null) res.status(404).send("NOT FOUND");
+    else res.send(responseTask);
   } catch (e) {
     handleHttp(res, "ERROR_GET_TASKS");
   }

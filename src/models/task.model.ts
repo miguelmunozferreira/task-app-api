@@ -11,6 +11,11 @@ const TaskSchema = new Schema<Task>(
       type: Boolean,
       required: true,
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
+    },
   },
   {
     timestamps: true,
