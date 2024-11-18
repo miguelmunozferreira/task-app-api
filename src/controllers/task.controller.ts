@@ -3,9 +3,9 @@ import { handleHttp } from "../utils/error.handle";
 import * as TaskService from "../services/task.service";
 import { RequestExtend } from "../interfaces/requestextend.interface";
 
-const getTasks = async (req: Request, res: Response) => {
+const getTasks = async ({ body, userId }: RequestExtend, res: Response) => {
   try {
-    const responseTasks = await TaskService.getTasks();
+    const responseTasks = await TaskService.getTasks(userId);
     res.send(responseTasks);
   } catch (e) {
     handleHttp(res, "ERROR_GET_TASKS");
@@ -22,14 +22,10 @@ const getTask = async ({ params }: Request, res: Response) => {
   }
 };
 
-const addTask = async ({ body, user }: RequestExtend, res: Response) => {
+const addTask = async ({ body, userId }: RequestExtend, res: Response) => {
   try {
-    if (user && typeof user === "object" && "id" in user) {
-      const responseTask = await TaskService.insertTask(body, user.id);
-      res.send(responseTask);
-    } else {
-      res.status(400).send("ERROR_ADD_");
-    }
+    const responseTask = await TaskService.insertTask(body, userId);
+    res.send(responseTask);
   } catch (e) {
     handleHttp(res, "ERROR_ADD_TASK");
   }

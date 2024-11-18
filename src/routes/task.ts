@@ -4,7 +4,7 @@ import { checkJwt } from "../middleware/session";
 
 const router = Router();
 
-router.get("/", getTasks);
+router.get("/", checkJwt, getTasks);
 router.get("/:id", getTask);
 router.post("/", checkJwt, addTask);
 router.put("/:id", updateTask);

@@ -2,8 +2,8 @@ import TaskModel from "../models/task.model";
 import { Task } from "../interfaces/task.interface";
 import { getUser } from "./user.service";
 
-export const getTasks = async () => {
-  const tasks = await TaskModel.find().populate("createdBy", "name").lean();
+export const getTasks = async (userId?: string) => {
+  const tasks = await TaskModel.find({ createdBy: userId }).populate("createdBy", "name").lean();
 
   const res: Task[] = tasks.map((task) => ({
     id: task._id.toString(),
@@ -30,9 +30,11 @@ export const getTask = async (id: string) => {
   return res;
 };
 
-export const insertTask = async (task: Task, userId: string) => {
-  const user = await getUser(userId);
-  if (user) task.createdBy = user;
+export const insertTask = async (task: Task, userId?: string) => {
+  if (userId) {
+    const user = await getUser(userId);
+    if (user) task.createdBy = user;
+  }
   const res = await TaskModel.create(task);
   return res;
 };

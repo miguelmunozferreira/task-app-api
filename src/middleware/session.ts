@@ -7,11 +7,11 @@ const checkJwt = (req: RequestExtend, res: Response, next: NextFunction) => {
     const jwtUser = req.headers.authorization || null;
     const jwt = jwtUser?.split(" ").pop();
     const user = verifyToken(`${jwt}`);
-    if (user) {
-      req.user = user;
+    if (user && typeof user === "object" && "id" in user) {
+      req.userId = user.id;
       next();
     } else {
-      res.status(403);
+      res.status(403).send();
     }
   } catch (error) {
     res.status(403).send("SESSION INVALID");
