@@ -1,5 +1,6 @@
 import TaskModel from "../models/task.model";
 import { Task } from "../interfaces/task.interface";
+import { getUser } from "./user.service";
 
 export const getTasks = async () => {
   const tasks = await TaskModel.find().populate("createdBy", "name").lean();
@@ -29,7 +30,9 @@ export const getTask = async (id: string) => {
   return res;
 };
 
-export const insertTask = async (task: Task) => {
+export const insertTask = async (task: Task, userId: string) => {
+  const user = await getUser(userId);
+  if (user) task.createdBy = user;
   const res = await TaskModel.create(task);
   return res;
 };

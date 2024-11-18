@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
 import * as TaskService from "../services/task.service";
+import { RequestExtend } from "../interfaces/requestextend.interface";
 
 const getTasks = async (req: Request, res: Response) => {
   try {
@@ -21,10 +22,14 @@ const getTask = async ({ params }: Request, res: Response) => {
   }
 };
 
-const addTask = async ({ body }: Request, res: Response) => {
+const addTask = async ({ body, user }: RequestExtend, res: Response) => {
   try {
-    const responseTask = await TaskService.insertTask(body);
-    res.send(responseTask);
+    if (user && typeof user === "object" && "id" in user) {
+      const responseTask = await TaskService.insertTask(body, user.id);
+      res.send(responseTask);
+    } else {
+      res.status(400).send("ERROR_ADD_");
+    }
   } catch (e) {
     handleHttp(res, "ERROR_ADD_TASK");
   }

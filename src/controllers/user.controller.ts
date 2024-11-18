@@ -1,11 +1,9 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
-import { RequestExtend } from "../interfaces/requestextend.interface";
 import * as UserService from "../services/user.service";
 
-const getUsersCtrl = async (req: RequestExtend, res: Response) => {
+const getUsersCtrl = async (req: Request, res: Response) => {
   try {
-    console.log(req.user);
     const responseUsers = await UserService.getUsers();
     res.send(responseUsers);
   } catch (e) {

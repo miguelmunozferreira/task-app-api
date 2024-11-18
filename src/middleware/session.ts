@@ -6,9 +6,9 @@ const checkJwt = (req: RequestExtend, res: Response, next: NextFunction) => {
   try {
     const jwtUser = req.headers.authorization || null;
     const jwt = jwtUser?.split(" ").pop();
-    const idUser = verifyToken(`${jwt}`);
-    if (idUser) {
-      req.user = idUser;
+    const user = verifyToken(`${jwt}`);
+    if (user) {
+      req.user = user;
       next();
     } else {
       res.status(403);
